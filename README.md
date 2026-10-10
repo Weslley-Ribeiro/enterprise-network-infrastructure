@@ -1,2 +1,63 @@
-# enterprise-network-infrastructure
-Infraestrutura de rede corporativa simulada no Cisco Packet Tracer com segmentação de VLANs, subnetting CIDR /27 e distribuição de tráfego estático/DHCP.
+<div align="center">
+
+# 🏢 Enterprise Network Infrastructure Simulation
+### Projeto de Infraestrutura, Subnetting CIDR /27 e Segmentação por VLANs
+
+![Status](https://img.shields.io/badge/Status-Concluído-238636?style=for-the-badge&logo=checkmarx&logoColor=white)
+![Cisco](https://img.shields.io/badge/Cisco_Packet_Tracer-7.x%20|%208.x-2ea44f?style=for-the-badge&logo=cisco&logoColor=white)
+![Network](https://img.shields.io/badge/Redes-VLAN%20%26%20Subnetting-00875a?style=for-the-badge&logo=wireshark&logoColor=white)
+![License](https://img.shields.io/badge/Licença-MIT-1b5e20?style=for-the-badge)
+
+</div>
+
+---
+
+## 📌 Visão Geral do Projeto
+
+Este projeto consiste no planejamento e implementação da arquitetura de rede local (LAN) para a empresa fictícia **Super Tech**, dimensionada para suportar operações corporativas departamentais com alta segurança, controle de broadcast e otimização do espaço de endereçamento IPv4.
+
+O projeto foi modelado e validado no ambiente de simulação **Cisco Packet Tracer**, contemplando:
+- Topologia física e lógica em estrela;
+- Subnetting de rede Classe C com máscara customizada `/27`;
+- Segmentação departamental e divisão de domínios de broadcast via **VLANs**;
+- Uso de switches gerenciáveis **Cisco Catalyst 2950-24**;
+- Política mista de endereçamento: **IPs Estáticos** para setores críticos e servidores, e **DHCP Dinâmico** para estações operacionais.
+
+---
+
+## 🏢 Cenário Corporativo & Requisitos
+
+A empresa é composta por 4 departamentos estratégicos, totalizando **96 dispositivos finais**:
+
+| Departamento | Estações de Trabalho | Servidores Dedicados | Impressoras de Rede | Total de Hosts | Política de IP |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Engenharia** | 20 | 2 | 2 | 24 hosts | Estático |
+| **TI Interno** | 20 | 2 | 2 | 24 hosts | Estático |
+| **Compras** | 20 | 2 | 2 | 24 hosts | Dinâmico (DHCP) |
+| **Infraestrutura** | 20 | 2 | 2 | 24 hosts | Dinâmico (DHCP) |
+
+---
+
+## 📐 Engenharia de Endereçamento (Subnetting /27)
+
+Para atender à demanda estrita de **24 hosts utilizáveis por departamento** sem desperdício de endereços, foi aplicada a técnica de subnetting em uma rede IPv4 de Classe C base (`192.168.10.0/24`):
+
+- **Fórmula de Hosts:** $2^5 - 2 = 30$ hosts disponíveis (atende com folga aos 24 hosts exigidos).
+- **Bits de Rede emprestados:** 3 bits ($2^3 = 8$ sub-redes possíveis).
+- **Máscara de Sub-rede:** `255.255.255.224` (notação CIDR `/27`).
+- **Incremento de Bloco:** 32 endereços por sub-rede.
+
+### Tabela de Roteamento e Alocação de IPs
+
+| Sub-rede | Departamento | ID da Sub-rede | 1º IP Válido | Último IP Válido | Endereço de Broadcast |
+| :---: | :--- | :--- | :--- | :--- | :--- |
+| **Sub-rede 1** | Engenharia | `192.168.10.0/27` | `192.168.10.1` | `192.168.10.30` | `192.168.10.31` |
+| **Sub-rede 2** | Compras | `192.168.10.32/27` | `192.168.10.33` | `192.168.10.62` | `192.168.10.63` |
+| **Sub-rede 3** | TI Interno | `192.168.10.64/27` | `192.168.10.65` | `192.168.10.94` | `192.168.10.95` |
+| **Sub-rede 4** | Infraestrutura | `192.168.10.96/27` | `192.168.10.97` | `192.168.10.126` | `192.168.10.127` |
+
+---
+
+## 🔌 Arquitetura Lógica e Configuração de VLANs
+
+Cada departamento é centralizado em um switch **Cisco Catalyst 2950-24**, com as 24 portas FastEthernet divididas fisicamente e logicamente em duas VLANs distintas de 12 portas para isolamento de tráfego:
