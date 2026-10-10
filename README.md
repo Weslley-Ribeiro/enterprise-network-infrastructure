@@ -26,6 +26,10 @@ O projeto foi modelado e validado no ambiente de simulação **Cisco Packet Trac
 ---
 
 ## 🏢 Cenário Corporativo & Requisitos
+<div align="center">
+  <img src="./topologia-rede.png" alt="Topologia Corporativa Super Tech" width="850px" />
+  <p><em>Figura 1: Topologia física e lógica dos 4 departamentos no Cisco Packet Tracer.</em></p>
+</div>
 
 A empresa é composta por 4 departamentos estratégicos, totalizando **96 dispositivos finais**:
 
@@ -59,6 +63,10 @@ Para atender à demanda estrita de **24 hosts utilizáveis por departamento** se
 ---
 
 ## 🔌 Arquitetura Lógica e Configuração de VLANs
+<div align="center">
+  <img src="./switch-vlans.png" alt="Configuração de VLANs no Switch Cisco 2950" width="800px" />
+  <p><em>Figura 2: Alocação de portas FastEthernet (VLAN 1 e VLAN 2) e IPs de gerenciamento (/27).</em></p>
+</div>
 
 Cada departamento é centralizado em um switch **Cisco Catalyst 2950-24**, com as 24 portas FastEthernet divididas fisicamente e logicamente em duas VLANs distintas de 12 portas para isolamento de tráfego:
 
